@@ -1,5 +1,6 @@
 import smtplib as sm
 import os
+from openpyxl import workbook,load_workbook
 
 personas = []
 
@@ -40,4 +41,12 @@ while True:
     elif n == '3':
         os.system('cls')
         print('Gracias por usar el programa, guardando invitados...')
+        wb = load_workbook('personas.xlsx')
+        sheet = wb.get_sheet_by_name('Sheet1')
+        for i in range(len(personas)):
+            sheet['A'+str(len(sheet['A'])+1)] = personas[i]['Nombre']
+            sheet['B'+str(len(sheet['B']))] = personas[i]['Teléfono']
+            sheet['C'+str(len(sheet['C']))] = personas[i]['Email']
+        wb.save('personas.xlsx')
+        
         exit()
