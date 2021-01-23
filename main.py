@@ -10,7 +10,7 @@ while True:
     print('1 - Ingreso')
     print('2 - Ver cantidad de personas')
     print('3 - Salir y enviar')
-    n = input('>>>')
+    n = input('>>> ')
     if n == '1':
         while True:
             os.system('cls')
@@ -22,14 +22,22 @@ while True:
             except ValueError:
                 print('Ingrese un valor numérico')
                 input('Presione enter para continuar...')
-        mail = input('Ingrese el mail:')
-                
+        mail = input('Ingrese el mail: ')
+        personas.append({'Nombre': per,'Teléfono': tel,'Email': mail})
+        print('¡Invitado ingresado correctamente!')
+        input('Presione enter para continuar...')
 
     elif n == '2':
         os.system('cls')
-        print('Opcion 2')
-        input('presione enter para continuar...')
+        for i in range(len(personas)):
+            print('Invitado',i+1)
+            print()
+            print('Nombre:',personas[i]['Nombre'])
+            print('Teléfono:',personas[i]['Teléfono'])
+            print('Email:',personas[i]['Email'])
+            print()
+        input('Presione enter para continuar')
     elif n == '3':
         os.system('cls')
-        print('Gracias por usar el programa')
+        print('Gracias por usar el programa, guardando invitados...')
         exit()
