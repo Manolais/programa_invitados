@@ -1,18 +1,43 @@
 import smtplib as sm
 import os
-from openpyxl import workbook,load_workbook
+from openpyxl import Workbook,load_workbook
+import sys
+
+
+def identTerminal():
+    import sys
+    p = sys.platform
+    if p == 'aix':
+        return
+    elif p == 'linux':
+        return 'clear'
+    elif p == 'win32':
+        return 'cls'
+    elif p == 'cygwin':
+        return
+    elif p == 'darwin':
+        return 'clear'
+
 
 personas = []
 
 while True:
-    os.system('cls')
+    if not os.path.exists('personas.xlsx'):
+        wb = Workbook('personasxlsx')
+        sheet1 = wb.create_sheet('Sheet1')
+        wb.remove_sheet('Sheet')
+        sheet1['A1'] = 'Nombre'
+        sheet1['B1'] = 'Teléfono'
+        sheet1['C1'] = 'Email'
+        wb.save('personas.xlsx')
+    os.system(identTerminal())
     print('1 - Ingreso')
     print('2 - Ver cantidad de personas')
     print('3 - Salir y enviar')
     n = input('>>> ')
     if n == '1':
         while True:
-            os.system('cls')
+            os.system(identTerminal())
             per = input('Ingrese el nombre: ')
             tel = input('Ingrese número telefónico: ')
             try:
@@ -27,16 +52,17 @@ while True:
         input('Presione enter para continuar...')
 
     elif n == '2':
-        os.system('cls')
+        os.system(identTerminal())
         print('1 - Ver invitados en ram')
         print('2 - Ver invitados en excel')
         p = input('>>>')
         if p == '1':
             if len(personas) == 0:
+                os.system(identTerminal())
                 print('Lista de invitados vacia, por favor agregue invitados para poder visualizarlos')
                 input('Presione enter para continuar...')
             else:
-                os.system('cls')
+                os.system(identTerminal())
                 print('--------------------')
                 for i in personas:
                     print('')
@@ -53,12 +79,12 @@ while True:
             sheet1['A1'] = 'Nombre'
             sheet1['B1'] = 'Teléfono'
             sheet1['C1'] = 'Email'
-            if type(sheet1['A2'].value) == None:
-                os.system('cls')
+            if sheet1['A2'].value == None:
+                os.system(identTerminal())
                 print('Excel vacio, vuelva cuando guarde los cambios')
                 input('Presione enter para continuar...')
             elif type(sheet1['A2'].value) == str:
-                os.system('cls')
+                os.system(identTerminal())
                 print('--------------------')
                 for i in range(len(sheet1['A'])-1):
                     print('Invitado', i+1)
@@ -82,12 +108,12 @@ while True:
             sheet['B'+str(len(sheet['B']))] = i['Telefono']
             sheet['C'+str(len(sheet['C']))] = i['Email']
         wb.save('personas.xlsx')
-        os.system('cls')
+        os.system(identTerminal())
         sv = sm.SMTP('smtp.gmail.com',587)
         sv.starttls()
         sv.login('programainvitados@gmail.com','prog_invit')
         sv.sendmail('programainvitados@gmail.com','bsasmanuelsilva@gmail.com',str(personas))
-        os.system('cls')
+        os.system(identTerminal())
         print('Gracias por usar el programa, guardando invitados...')
         print('Correo enviado correctamente!')
         input('Presione enter para salir...')
