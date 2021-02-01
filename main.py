@@ -25,10 +25,6 @@ while True:
     if not os.path.exists('personas.xlsx'):
         wb = Workbook('personasxlsx')
         sheet1 = wb.create_sheet('Sheet1')
-        wb.remove_sheet('Sheet')
-        sheet1['A1'] = 'Nombre'
-        sheet1['B1'] = 'Teléfono'
-        sheet1['C1'] = 'Email'
         wb.save('personas.xlsx')
     os.system(identTerminal())
     print('1 - Ingreso')
@@ -36,9 +32,11 @@ while True:
     print('3 - Salir y enviar')
     n = input('>>> ')
     if n == '1':
+        os.system(identTerminal())
+        per = input('Ingrese el nombre: ')
         while True:
             os.system(identTerminal())
-            per = input('Ingrese el nombre: ')
+            print('Ingrese el nombre:', per)
             tel = input('Ingrese número telefónico: ')
             try:
                 tel = int(tel)
@@ -98,6 +96,8 @@ while True:
 
 
     elif n == '3':
+
+        #Guardar cambios en el excel
         wb = load_workbook('personas.xlsx')
         sheet = wb.get_sheet_by_name('Sheet1')
         sheet['A1'] = 'Nombre'
@@ -109,10 +109,15 @@ while True:
             sheet['C'+str(len(sheet['C']))] = i['Email']
         wb.save('personas.xlsx')
         os.system(identTerminal())
+
+        #Enviar email
+        subject = 'Lista de personas'
+        body = str(personas)
+        msg = f'Subject: {subject} \n\n {body}'
         sv = sm.SMTP('smtp.gmail.com',587)
         sv.starttls()
-        sv.login('programainvitados@gmail.com','prog_invit')
-        sv.sendmail('programainvitados@gmail.com','bsasmanuelsilva@gmail.com',str(personas))
+        sv.login('trabajopracticonumero969@gmail.com','AA1234567.-')
+        sv.sendmail('programainvitados@gmail.com','bsasmanuelsilva@gmail.com',msg)
         os.system(identTerminal())
         print('Gracias por usar el programa, guardando invitados...')
         print('Correo enviado correctamente!')
